@@ -5,6 +5,10 @@ from fastapi.responses import HTMLResponse
 import os
 from groq import Groq
 
+client = Groq(
+    api_key=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,
+)
+
 #key = os.getenv("key")
 
 client = Groq(api_key="",)
@@ -44,6 +48,19 @@ async def atomcamp():
 @app.get("/8april")
 async def april():
     return "we just created a new endpoint"
+
+@app.get("/chat")
+async def groq():
+    chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            "role": "user",
+            "content": "Write a joke",
+        }
+    ],
+    model="llama3-8b-8192",
+)
+ return str(chat_completion.choices[0].message.content)
 
 @app.get("/chat/{q}")
 async def groq(q):
